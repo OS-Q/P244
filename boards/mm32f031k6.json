@@ -25,12 +25,10 @@
     "cmsis",
     "mbed",
     "spl",
-    "std",
-    "stm32cube",
-    "opencm3",
+    "hal",
     "libopencm3"
   ],
-  "name": "ST Nucleo F031K6",
+  "name": "MM32F031K6",
   "upload": {
     "maximum_ram_size": 4096,
     "maximum_size": 32768,

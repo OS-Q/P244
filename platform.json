@@ -55,19 +55,6 @@
       "description": "Arduino Wiring-based Framework allows writing cross-platform software to control devices attached to a wide range of Arduino boards to create all kinds of creative coding, interactive objects, spaces or physical experiences",
       "homepage": "http://arduino.cc/en/Reference/HomePage",
       "title": "Arduino"
-    },
-    "stm32cube": {
-      "script": "builder/frameworks/stm32cube.py",
-      "description": "STM32Cube embedded software libraries, including: The HAL hardware abstraction layer, enabling portability between different STM32 devices via standardized API calls; The Low-Layer (LL) APIs, a light-weight, optimized, expert oriented set of APIs designed for both performance and runtime efficiency",
-      "homepage": "https://www.st.com/en/ecosystems/stm32cube.html",
-      "title": "STM32Cube"
-    },
-    "zephyr": {
-      "package": "framework-zephyr",
-      "script": "builder/frameworks/zephyr.py",
-      "description": "The Zephyr Project is a scalable real-time operating system (RTOS) supporting multiple hardware architectures, optimized for resource constrained devices, and built with safety and security in mind",
-      "homepage": "https://www.zephyrproject.org",
-      "title": "Zephyr RTOS"
     }
   },
   "packages": {
