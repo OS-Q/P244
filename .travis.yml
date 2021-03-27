@@ -1,0 +1,27 @@
+language: python
+python:
+  - "3.7"
+
+env:
+  - PLATFORMIO_PROJECT_DIR=examples/arduino-blink
+  - PLATFORMIO_PROJECT_DIR=examples/cmsis-blink
+  - PLATFORMIO_PROJECT_DIR=examples/libopencm3-blink
+  - PLATFORMIO_PROJECT_DIR=examples/spl-blink
+  - PLATFORMIO_PROJECT_DIR=examples/stm32cube-hal-blink
+  - PLATFORMIO_PROJECT_DIR=examples/stm32cube-ll-blink
+  - PLATFORMIO_PROJECT_DIR=examples/zephyr-blink
+
+
+install:
+  - pip install -U https://github.com/OS-Q/S03/archive/master.zip
+  - qio platform install file://.
+
+script:
+  - qio run -s -d $PLATFORMIO_PROJECT_DIR
+
+notifications:
+  email:
+    recipients:
+      - tang@qitas.cn
+    on_success: never # default: change
+    on_failure: always # default: always
