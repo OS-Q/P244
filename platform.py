@@ -1,17 +1,3 @@
-# Copyright 2014-present PlatformIO <contact@platformio.org>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import copy
 import json
 import os
@@ -21,7 +7,7 @@ from platform import system
 from platformio.managers.platform import PlatformBase
 from platformio.util import get_systype
 
-class P24Platform(PlatformBase):
+class P25APlatform(PlatformBase):
 
     def configure_default_packages(self, variables, targets):
         board = variables.get("board")
@@ -31,35 +17,6 @@ class P24Platform(PlatformBase):
         build_mcu = variables.get("board_build.mcu", board_config.get("build.mcu", ""))
 
         frameworks = variables.get("pioframework", [])
-        if "arduino" in frameworks:
-            if build_core == "maple":
-                self.frameworks["arduino"]["package"] = "framework-arduinoststm32-maple"
-                self.packages["framework-arduinoststm32-maple"]["optional"] = False
-                self.packages["framework-arduinoststm32"]["optional"] = True
-            elif build_core == "stm32l0":
-                self.frameworks["arduino"]["package"] = "framework-arduinoststm32l0"
-                self.packages["framework-arduinoststm32l0"]["optional"] = False
-                self.packages["framework-arduinoststm32"]["optional"] = True
-            else:
-                self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.90201.0"
-                self.packages["framework-cmsis"]["version"] = "~2.50501.0"
-                self.packages["framework-cmsis"]["optional"] = False
-
-        if "mbed" in frameworks:
-            deprecated_boards_file = os.path.join(
-                self.get_dir(), "misc", "mbed_deprecated_boards.json")
-            if os.path.isfile(deprecated_boards_file):
-                with open(deprecated_boards_file) as fp:
-                    if board in json.load(fp):
-                        self.packages["framework-mbed"]["version"] = "~6.51506.0"
-            self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.90201.0"
-
-        if "cmsis" in frameworks:
-            assert build_mcu, ("Missing MCU field for %s" % board)
-            device_package = "framework-cmsis-" + build_mcu[0:7]
-            if device_package in self.packages:
-                self.packages[device_package]["optional"] = False
-
         if "stm32cube" in frameworks:
             assert build_mcu, ("Missing MCU field for %s" % board)
             device_package = "framework-stm32cube%s" % build_mcu[5:7]
@@ -72,21 +29,6 @@ class P24Platform(PlatformBase):
         if variables.get("upload_protocol", default_protocol) == "dfu":
             self.packages["tool-dfuutil"]["optional"] = False
 
-        if board == "mxchip_az3166":
-            self.frameworks["arduino"][
-                "package"] = "framework-arduinostm32mxchip"
-            self.frameworks["arduino"][
-                "script"] = "builder/frameworks/arduino/mxchip.py"
-            self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.60301.0"
-
-        if "zephyr" in variables.get("pioframework", []):
-            for p in self.packages:
-                if p.startswith("framework-zephyr-") or p in (
-                        "tool-cmake", "tool-dtc", "tool-ninja"):
-                    self.packages[p]["optional"] = False
-            self.packages["toolchain-gccarmnoneeabi"]["version"] = "~1.80201.0"
-            if "windows" not in get_systype():
-                self.packages["tool-gperf"]["optional"] = False
 
         # configure J-LINK tool
         jlink_conds = [

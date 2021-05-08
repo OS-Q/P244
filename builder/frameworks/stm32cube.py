@@ -1,27 +1,3 @@
-# Copyright 2014-present PlatformIO <contact@platformio.org>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#    http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-"""
-STM32Cube HAL
-
-STM32Cube embedded software libraries, including:
-The HAL hardware abstraction layer, enabling portability between different STM32 devices via standardized API calls
-The Low-Layer (LL) APIs, a light-weight, optimized, expert oriented set of APIs designed for both performance and runtime efficiency.
-
-http://www.st.com/en/embedded-software/stm32cube-embedded-software.html?querycriteria=productId=LN1897
-"""
-
 import glob
 import os
 import shutil
@@ -125,21 +101,23 @@ def generate_hal_config_file():
         "Inc",
     )
 
-    if os.path.isfile(os.path.join(config_path, MCU_FAMILY + "xx_hal_conf.h")):
-        return
+    conf_h_path = os.path.join(config_path, MCU_FAMILY + "xx_hal_conf.h")
+    template_h_path = os.path.join(config_path, MCU_FAMILY + "xx_hal_conf_template.h")
 
-    if not os.path.isfile(
-        os.path.join(config_path, MCU_FAMILY + "xx_hal_conf_template.h")
-    ):
-        sys.stderr.write(
-            "Error: Cannot find peripheral template file to configure framework!\n"
-        )
-        env.Exit(1)
+    if board.get("build.stm32cube.custom_config_header", "no") == "yes":
+        if os.path.isfile(conf_h_path):
+            os.remove(conf_h_path)
+    else:
+        if os.path.isfile(conf_h_path):
+            return
 
-    shutil.copy(
-        os.path.join(config_path, MCU_FAMILY + "xx_hal_conf_template.h"),
-        os.path.join(config_path, MCU_FAMILY + "xx_hal_conf.h"),
-    )
+        if not os.path.isfile(template_h_path):
+            sys.stderr.write(
+                "Error: Cannot find peripheral template file to configure framework!\n"
+            )
+            env.Exit(1)
+
+        shutil.copy(template_h_path, conf_h_path)
 
 
 def build_custom_lib(lib_path, lib_manifest=None):
@@ -316,8 +294,7 @@ if "build.stm32cube.variant" in board:
 #
 
 # Generate a default stm32xxx_hal_conf.h
-if board.get("build.stm32cube.custom_config_header", "no") == "no":
-    generate_hal_config_file()
+generate_hal_config_file()
 
 env.BuildSources(
     os.path.join("$BUILD_DIR", "FrameworkHALDriver"),

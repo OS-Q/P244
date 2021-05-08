@@ -4,7 +4,28 @@ from os import makedirs
 from os.path import basename, isdir, join
 
 from SCons.Script import (ARGUMENTS, COMMAND_LINE_TARGETS, AlwaysBuild,
-                            Builder, Default, DefaultEnvironment)
+                          Builder, Default, DefaultEnvironment)
+
+from platformio.util import get_serial_ports
+
+
+def BeforeUpload(target, source, env):  # pylint: disable=W0613,W0621
+    env.AutodetectUploadPort()
+
+    upload_options = {}
+    if "BOARD" in env:
+        upload_options = env.BoardConfig().get("upload", {})
+
+    if not bool(upload_options.get("disable_flushing", False)):
+        env.FlushSerialBuffer("$UPLOAD_PORT")
+
+    before_ports = get_serial_ports()
+
+    if bool(upload_options.get("use_1200bps_touch", False)):
+        env.TouchSerialPort("$UPLOAD_PORT", 1200)
+
+    if bool(upload_options.get("wait_for_upload_port", False)):
+        env.Replace(UPLOAD_PORT=env.WaitForNewSerialPort(before_ports))
 
 
 env = DefaultEnvironment()
@@ -66,23 +87,6 @@ env.Append(
 if not env.get("PIOFRAMEWORK"):
     env.SConscript("frameworks/_bare.py")
 
-#
-# Target: Build executable and linkable firmware
-#
-
-if "zephyr" in env.get("PIOFRAMEWORK", []):
-    env.SConscript(
-        join(platform.get_package_dir(
-            "framework-zephyr"), "scripts", "platformio", "platformio-build-pre.py"),
-        exports={"env": env}
-    )
-
-if "zephyros" in env.get("PIOFRAMEWORK", []):
-    env.SConscript(
-        join(platform.get_package_dir(
-            "zephyros"), "scripts", "OSQ", "build-pre.py"),
-        exports={"env": env}
-    )
 
 target_elf = None
 if "nobuild" in COMMAND_LINE_TARGETS:
@@ -91,6 +95,7 @@ if "nobuild" in COMMAND_LINE_TARGETS:
 else:
     target_elf = env.BuildProgram()
     target_firm = env.ElfToBin(join("$BUILD_DIR", "${PROGNAME}"), target_elf)
+    env.Depends(target_firm, "checkprogsize")
 
 AlwaysBuild(env.Alias("nobuild", target_firm))
 target_buildprog = env.Alias("buildprog", target_firm, target_firm)
@@ -181,7 +186,7 @@ elif upload_protocol == "dfu":
 
     # default tool for all boards with embedded DFU bootloader over USB
     _upload_tool = '"%s"' % join(platform.get_package_dir(
-        "tool-dfuutil") or "", "bin", "dfu-util"),
+        "tool-dfuutil") or "", "bin", "dfu-util")
     _upload_flags = [
         "-d", ",".join(["%s:%s" % (hwid[0], hwid[1]) for hwid in hwids]),
         "-a", "0", "-s",
@@ -189,26 +194,6 @@ elif upload_protocol == "dfu":
     ]
 
     upload_actions = [env.VerboseAction("$UPLOADCMD", "Uploading $SOURCE")]
-
-    if board.get("build.mcu").startswith("stm32f103") and "arduino" in env.get(
-        "PIOFRAMEWORK"):
-        # F103 series doesn't have embedded DFU over USB
-        # stm32duino bootloader (v1, v2) is used instead
-        def __configure_upload_port(env):
-            return basename(env.subst("$UPLOAD_PORT"))
-
-        _upload_tool = "maple_upload"
-        _upload_flags = [
-            "${__configure_upload_port(__env__)}",
-            board.get("upload.boot_version", 2),
-            "%s:%s" % (vid[2:], pid[2:])
-        ]
-
-        env.Replace(__configure_upload_port=__configure_upload_port)
-
-        upload_actions.insert(
-            0, env.VerboseAction(env.AutodetectUploadPort,
-                                 "Looking for upload port..."))
 
     if "dfu-util" in _upload_tool:
         # Add special DFU header to the binary image
