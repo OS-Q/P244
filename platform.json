@@ -45,6 +45,16 @@
       "optional": true,
       "version": "https://github.com/OS-Q/E25B.git"
     },
+    "E25C": {
+      "type": "framework",
+      "optional": true,
+      "version": "https://github.com/OS-Q/E25C.git"
+    },
+    "E25D": {
+      "type": "framework",
+      "optional": true,
+      "version": "https://github.com/OS-Q/E25D.git"
+    },
     "D25": {
       "optional": true,
       "version": "https://github.com/OS-Q/D25.git"
