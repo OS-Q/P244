@@ -26,10 +26,7 @@
   },
   "frameworks": [
     "arduino",
-    "cmsis",
-    "mbed",
-    "stm32cube",
-    "libopencm3"
+    "stm32cube"
   ],
   "name": "ST Nucleo F072RB",
   "upload": {

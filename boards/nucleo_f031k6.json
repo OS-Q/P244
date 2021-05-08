@@ -23,12 +23,9 @@
   },
   "frameworks": [
     "arduino",
-    "cmsis",
-    "mbed",
-    "stm32cube",
-    "libopencm3"
+    "stm32cube"
   ],
-  "name": "ST Nucleo F031K6",
+  "name": "STM32F031K6",
   "upload": {
     "maximum_ram_size": 4096,
     "maximum_size": 32768,
