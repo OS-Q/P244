@@ -20,7 +20,7 @@
   },
   "version": "13.0.0",
   "frameworks": {
-    "stm32cube": {
+    "hal": {
       "script": "builder/frameworks/stm32cube.py"
     }
   },

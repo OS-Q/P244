@@ -17,12 +17,12 @@ class P25Platform(PlatformBase):
         build_mcu = variables.get("board_build.type", board_config.get("build.type", ""))
 
         frameworks = variables.get("pioframework", [])
-        if "stm32cube" in frameworks:
+        if "hal" in frameworks:
             assert build_mcu, ("Missing MCU field for type %s" % board)
             device_package = "E25%s" % build_mcu
-            self.frameworks["stm32cube"]["package"] = device_package
+            self.frameworks["hal"]["package"] = device_package
 
-        if any(f in frameworks for f in ("cmsis", "stm32cube")):
+        if any(f in frameworks for f in ("cmsis", "hal")):
             self.packages["D25"]["optional"] = False
 
         default_protocol = board_config.get("upload.protocol") or ""

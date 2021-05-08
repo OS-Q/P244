@@ -23,7 +23,7 @@
   },
   "frameworks": [
     "arduino",
-    "stm32cube"
+    "hal"
   ],
   "name": "STM32F031K6",
   "upload": {

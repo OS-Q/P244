@@ -23,7 +23,7 @@
   },
   "frameworks": [
     "arduino",
-    "stm32cube"
+    "hal"
   ],
   "name": "ST Nucleo F103RB",
   "upload": {

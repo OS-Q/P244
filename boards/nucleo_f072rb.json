@@ -26,7 +26,7 @@
   },
   "frameworks": [
     "arduino",
-    "stm32cube"
+    "hal"
   ],
   "name": "ST Nucleo F072RB",
   "upload": {

@@ -20,7 +20,7 @@
   },
   "frameworks": [
     "arduino",
-    "stm32cube"
+    "hal"
   ],
   "name": "ST Nucleo L011K4",
   "upload": {

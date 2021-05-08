@@ -21,7 +21,7 @@
   },
   "frameworks": [
     "arduino",
-    "stm32cube"
+    "hal"
   ],
   "name": "ST Nucleo L031K6",
   "upload": {
