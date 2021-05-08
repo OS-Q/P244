@@ -202,7 +202,7 @@ elif upload_protocol == "dfu":
             env.VerboseAction(
                 " ".join([
                     '"%s"' % join(platform.get_package_dir("tool-dfuutil") or "",
-                         "bin", "dfu-suffix"),
+                        "bin", "dfu-suffix"),
                     "-v %s" % vid,
                     "-p %s" % pid,
                     "-d 0xffff", "-a", "$TARGET"

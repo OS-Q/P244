@@ -2,6 +2,8 @@
 #include "stm32f0xx_hal.h"
 #elif F1
 #include "stm32f1xx_hal.h"
+#elif L0
+#include "stm32l0xx_hal.h"
 #else
 #error "Unsupported STM32 Family"
 #endif
