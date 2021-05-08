@@ -21,6 +21,7 @@
   "version": "13.0.0",
   "frameworks": {
     "stm32cube": {
+      "package": "E25A",
       "script": "builder/frameworks/stm32cube.py"
     }
   },
@@ -35,17 +36,15 @@
         "~1.90201.0"
       ]
     },
-    "framework-stm32cubef0": {
+    "E25A": {
       "type": "framework",
       "optional": true,
-      "owner": "platformio",
-      "version": "~1.11.0"
+      "version": "https://github.com/OS-Q/E25A.git"
     },
-    "framework-stm32cubef1": {
+    "E25B": {
       "type": "framework",
       "optional": true,
-      "owner": "platformio",
-      "version": "~1.8.0"
+      "version": "https://github.com/OS-Q/E25B.git"
     },
     "tool-stm32duino": {
       "type": "uploader",
