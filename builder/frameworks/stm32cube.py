@@ -20,7 +20,7 @@ PRODUCT_LINE = board.get("build.product_line", "")
 assert PRODUCT_LINE, "Missing MCU or Product Line field"
 
 FRAMEWORK_DIR = platform.get_package_dir("E25%s" % UTYPE)
-LDSCRIPTS_DIR = platform.get_package_dir("tool-ldscripts-ststm32")
+LDSCRIPTS_DIR = platform.get_package_dir("D25")
 assert all(os.path.isdir(d) for d in (FRAMEWORK_DIR, LDSCRIPTS_DIR))
 
 

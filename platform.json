@@ -45,6 +45,10 @@
       "optional": true,
       "version": "https://github.com/OS-Q/E25B.git"
     },
+    "D25": {
+      "optional": true,
+      "version": "https://github.com/OS-Q/D25.git"
+    },
     "tool-stm32duino": {
       "type": "uploader",
       "optional": true,
@@ -88,11 +92,6 @@
       "optional": true,
       "owner": "platformio",
       "version": "^3.0.0"
-    },
-    "tool-ldscripts-ststm32": {
-      "optional": true,
-      "owner": "platformio",
-      "version": "~0.1.0"
     }
   }
 }
