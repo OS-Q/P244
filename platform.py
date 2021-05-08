@@ -7,7 +7,7 @@ from platform import system
 from platformio.managers.platform import PlatformBase
 from platformio.util import get_systype
 
-class P25APlatform(PlatformBase):
+class P25Platform(PlatformBase):
 
     def configure_default_packages(self, variables, targets):
         board = variables.get("board")
