@@ -21,7 +21,6 @@
   "version": "13.0.0",
   "frameworks": {
     "stm32cube": {
-      "package": "E25",
       "script": "builder/frameworks/stm32cube.py"
     }
   },
@@ -36,10 +35,10 @@
         "~1.90201.0"
       ]
     },
-    "E25": {
+    "E25A": {
       "type": "framework",
       "optional": true,
-      "version": "https://github.com/OS-Q/E25.git"
+      "version": "https://github.com/OS-Q/E25A.git"
     },
     "E25B": {
       "type": "framework",

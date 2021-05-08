@@ -14,12 +14,12 @@ class P25Platform(PlatformBase):
         board_config = self.board_config(board)
         build_core = variables.get(
             "board_build.core", board_config.get("build.core", "arduino"))
-        build_mcu = variables.get("board_build.mcu", board_config.get("build.mcu", ""))
+        build_mcu = variables.get("board_build.type", board_config.get("build.type", ""))
 
         frameworks = variables.get("pioframework", [])
         if "stm32cube" in frameworks:
-            assert build_mcu, ("Missing MCU field for %s" % board)
-            device_package = "framework-stm32cube%s" % build_mcu[5:7]
+            assert build_mcu, ("Missing MCU field for type %s" % board)
+            device_package = "E25%s" % build_mcu
             self.frameworks["stm32cube"]["package"] = device_package
 
         if any(f in frameworks for f in ("cmsis", "stm32cube")):
@@ -44,8 +44,7 @@ class P25Platform(PlatformBase):
         if not any(jlink_conds) and jlink_pkgname in self.packages:
             del self.packages[jlink_pkgname]
 
-        return PlatformBase.configure_default_packages(self, variables,
-                                                       targets)
+        return PlatformBase.configure_default_packages(self, variables, targets)
 
     def get_boards(self, id_=None):
         result = PlatformBase.get_boards(self, id_)
@@ -88,8 +87,8 @@ class P25Platform(PlatformBase):
                             "-port", "2331"
                         ],
                         "executable": ("JLinkGDBServerCL.exe"
-                                       if system() == "Windows" else
-                                       "JLinkGDBServer")
+                                        if system() == "Windows" else
+                                        "JLinkGDBServer")
                     }
                 }
             else:
