@@ -33,5 +33,5 @@ asf4/
 nxp*/
 docs/
 doc/
-*.md
+# *.md
 !core/CHANGELOG.md
